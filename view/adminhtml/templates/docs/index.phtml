@@ -167,7 +167,7 @@ $cfgUrl = $block->getUrl('adminhtml/system_config/edit/section/panth_searchautoc
     <pre>Cache-Control: private, no-store, no-cache, must-revalidate
 X-Content-Type-Options: nosniff
 X-Robots-Tag: noindex, nofollow, nosnippet
-Referrer-Policy: same-origin</pre>
+Referrer-Policy: strict-origin-when-cross-origin</pre>
     <div class="ok"><strong>Defence in depth.</strong> Eight layers means an attacker has to bypass eight independent checks to reach the search engine. Cached responses are isolated per (store, customer group, query) so a compromise of one cache row never leaks another customer's view.</div>
     <div class="warn"><strong>Layer 9 (recommended):</strong> put a WAF in front (Cloudflare / Fastly / AWS WAF) and rate-limit POSTs to <code>/searchautocomplete/*</code> to e.g. 120 req/min/IP at the edge.</div>
 

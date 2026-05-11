@@ -100,7 +100,7 @@ class Suggest implements HttpGetActionInterface, HttpPostActionInterface, CsrfAw
         $result->setHeader('Pragma', 'no-cache', true);
         $result->setHeader('X-Content-Type-Options', 'nosniff', true);
         $result->setHeader('X-Robots-Tag', 'noindex, nofollow, nosnippet', true);
-        $result->setHeader('Referrer-Policy', 'same-origin', true);
+        $result->setHeader('Referrer-Policy', 'strict-origin-when-cross-origin', true);
 
         if (!$this->config->isEnabled()) {
             return $result->setData(['enabled' => false, 'products' => [], 'categories' => [], 'pages' => [], 'popular' => []]);

@@ -29,7 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   POST body cap, method whitelist.
 - Response headers: `Cache-Control: private, no-store`,
   `X-Content-Type-Options: nosniff`, `X-Robots-Tag: noindex`,
-  `Referrer-Policy: same-origin`.
+  `Referrer-Policy: strict-origin-when-cross-origin`.
 - **Hyva theme** template (vanilla JS, no Alpine timing issues, sized
   via Tailwind container).
 - **Luma theme** template — dual-mode bootstrap. If Panth_ThemeCustomizer
