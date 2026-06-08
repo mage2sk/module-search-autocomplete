@@ -1,6 +1,6 @@
 <?php
 /**
- * Panth Search Autocomplete — Luma template (vanilla JS).
+ * Panth Search Autocomplete - Luma template (vanilla JS).
  *
  * Layout pattern matches Luma's native search:
  *   - by default only a small magnifying-glass icon is visible in the
@@ -12,7 +12,7 @@
  *
  * The actual search logic (debounce, fetch, render results, recent /
  * popular / categories / pages, keyboard nav, security) lives entirely
- * in autocomplete.js — this template just supplies the markup it hooks
+ * in autocomplete.js - this template just supplies the markup it hooks
  * onto.
  *
  * @var \Magento\Framework\View\Element\Template $block
@@ -33,7 +33,7 @@ $jsConfig = $vm->jsConfig();
     icons (search trigger + bar + input). When that module is enabled
     we attach our autocomplete BEHAVIOUR to its existing input rather
     than render a parallel UI. When that module is disabled we fall
-    back to the standalone trigger + overlay below — Luma stores get
+    back to the standalone trigger + overlay below - Luma stores get
     autocomplete out of the box either way.
 
     The attach script (attach-to-themecustomizer.js) probes for
@@ -45,7 +45,7 @@ $jsConfig = $vm->jsConfig();
     window.PSAC_CONFIG.formKey = <?= /* @noEscape */ json_encode($vm->getFormKey()) ?>;
 </script>
 
-<!-- Standalone fallback. Hidden by default — revealed by autocomplete.js
+<!-- Standalone fallback. Hidden by default - revealed by autocomplete.js
      ONLY when Panth_ThemeCustomizer's #panth-search-input is not present
      on the page (i.e. ThemeCustomizer is disabled or its header-icons
      template is not injected). Avoids the brief flash where both search
