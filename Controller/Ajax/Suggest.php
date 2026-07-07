@@ -23,22 +23,6 @@ use Panth\SearchAutocomplete\Model\Suggestion\CmsPageProvider;
 use Panth\SearchAutocomplete\Model\Suggestion\PopularProvider;
 use Panth\SearchAutocomplete\Model\Suggestion\ProductProvider;
 
-/**
- * AJAX endpoint: GET|POST /searchautocomplete/ajax/suggest?q=...&form_key=...
- *
- * Pipeline:
- *   RequestValidator → RateLimiter → Cache lookup → Providers → Cache write → JSON
- *
- * Hot path is cache-only: warm queries return in <5 ms without touching
- * any provider. Cold path runs all four providers in sequence (each is
- * already very fast — products via Magento search engine, categories /
- * CMS / popular via single-table reads).
- *
- * CSRF: declared via CsrfAwareActionInterface so we can accept POST
- * requests carrying form_key without Magento's global CSRF guard
- * rejecting them; form_key is still validated explicitly in the
- * RequestValidator security layer.
- */
 class Suggest implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwareActionInterface
 {
     private RequestInterface $request;
@@ -93,9 +77,6 @@ class Suggest implements HttpGetActionInterface, HttpPostActionInterface, CsrfAw
         $startedAt = microtime(true);
         $result = $this->jsonFactory->create();
 
-        // Defence-in-depth response headers — keep proxies/CDNs from
-        // caching the JSON, prevent MIME sniffing, and stop search engines
-        // from indexing the endpoint.
         $result->setHeader('Cache-Control', 'private, no-store, no-cache, must-revalidate', true);
         $result->setHeader('Pragma', 'no-cache', true);
         $result->setHeader('X-Content-Type-Options', 'nosniff', true);
@@ -127,7 +108,6 @@ class Suggest implements HttpGetActionInterface, HttpPostActionInterface, CsrfAw
 
         $cacheKey = $this->makeCacheKey($query, $storeId, $groupId);
 
-        // Cache hit: bypass providers entirely.
         $cached = $this->config->isCacheEnabled() ? $this->cache->load($cacheKey) : false;
         if ($cached !== false && $cached !== null && $cached !== '') {
             $payload = json_decode((string) $cached, true);
@@ -138,14 +118,11 @@ class Suggest implements HttpGetActionInterface, HttpPostActionInterface, CsrfAw
             }
         }
 
-        // Cold path: gather suggestions from each provider.
         $products   = $this->productProvider->search($query);
         $categories = $this->categoryProvider->search($query);
         $pages      = $this->cmsPageProvider->search($query);
         $popular    = $this->popularProvider->search($query);
 
-        // Persist this query to search_query so the popularity counter
-        // grows over time and feeds the popular-section in future calls.
         try {
             $magentoQuery = $this->queryFactory->get();
             $magentoQuery->setStoreId($storeId);
@@ -153,7 +130,6 @@ class Suggest implements HttpGetActionInterface, HttpPostActionInterface, CsrfAw
             $magentoQuery->setData('num_results', count($products));
             $magentoQuery->saveIncrementalPopularity();
         } catch (\Throwable $e) {
-            // Decorative — never break the response.
         }
 
         $payload = [
@@ -198,9 +174,6 @@ class Suggest implements HttpGetActionInterface, HttpPostActionInterface, CsrfAw
 
     public function validateForCsrf(RequestInterface $request): ?bool
     {
-        // form_key is validated explicitly inside RequestValidator so we
-        // bypass Magento's CSRF guard here. Returning true tells the
-        // framework "this controller already enforces its own CSRF".
         return true;
     }
 }

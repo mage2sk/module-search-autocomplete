@@ -8,14 +8,6 @@ use Magento\Store\Model\StoreManagerInterface;
 use Panth\SearchAutocomplete\Helper\Config;
 use Psr\Log\LoggerInterface;
 
-/**
- * Category suggestion provider.
- *
- * Searches the category collection by name LIKE on the current store.
- * Joins product_count for the "(N items)" hint shown in the dropdown.
- * Caching at the controller level means each query only hits the DB once
- * per (store, customer-group, query) combination per TTL window.
- */
 class CategoryProvider
 {
     private CollectionFactory $collectionFactory;
@@ -35,9 +27,6 @@ class CategoryProvider
         $this->logger = $logger;
     }
 
-    /**
-     * @return array<int, array<string, mixed>>
-     */
     public function search(string $query): array
     {
         $limit = $this->config->getCategoriesLimit();
@@ -49,10 +38,6 @@ class CategoryProvider
             $rootCategoryId = (int) $store->getRootCategoryId();
             $like = '%' . $this->escapeLike($query) . '%';
 
-            // Pass 1 — primary filter on `name`. The vast majority of
-            // category lookups are by category name, and a single-
-            // attribute filter is the most reliable across Magento
-            // versions and EAV join setups.
             $collection = $this->collectionFactory->create();
             $collection
                 ->addAttributeToSelect(['name', 'description', 'url_key', 'url_path', 'is_active', 'include_in_menu'])
@@ -65,9 +50,6 @@ class CategoryProvider
                 ->setPageSize($limit * 2)
                 ->setCurPage(1);
 
-            // Try to surface a product count when available without forcing
-            // a slow JOIN — Magento exposes joinUrlRewrite + joinField helpers
-            // that work on any storage backend.
             try {
                 $collection->joinField(
                     'product_count',
@@ -79,16 +61,10 @@ class CategoryProvider
                     'group'
                 );
             } catch (\Throwable $e) {
-                // Best-effort — count is decorative, never fatal.
             }
 
             $rows = $this->extractRows($collection, $query, $rootCategoryId, $limit);
 
-            // Pass 2 — fallback search on `description` when pass 1 came
-            // up short. Some merchants put rich descriptions on category
-            // pages with the brand keywords / promo copy, and customers
-            // type those words too. Single-attribute filter again so the
-            // SQL stays simple and the EAV joins behave predictably.
             if (count($rows) < $limit) {
                 try {
                     $descColl = $this->collectionFactory->create();
@@ -115,7 +91,6 @@ class CategoryProvider
                         }
                     }
                 } catch (\Throwable $e) {
-                    // description LIKE failed — non-fatal, primary results stand.
                 }
             }
 
@@ -131,13 +106,6 @@ class CategoryProvider
         return str_replace(['\\', '%', '_'], ['\\\\', '\\%', '\\_'], $value);
     }
 
-    /**
-     * Walk a category collection and convert each row into the dropdown
-     * payload shape, applying the same defensive guards as the main
-     * search() method.
-     *
-     * @return array<int, array<string, mixed>>
-     */
     private function extractRows($collection, string $query, int $rootCategoryId, int $limit): array
     {
         $rows = [];
@@ -148,9 +116,7 @@ class CategoryProvider
             if ($id <= 0 || $id === $rootCategoryId || $name === '') {
                 continue;
             }
-            // Verify the row actually contains the query somewhere
-            // (name OR description) — protects against phantom rows the
-            // joined product_count GROUP BY can surface.
+
             $haystack = mb_strtolower($name . ' ' . (string) $cat->getData('description'));
             if (mb_strpos($haystack, $needle) === false) {
                 continue;

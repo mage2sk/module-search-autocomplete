@@ -9,19 +9,6 @@ use Magento\Store\Model\StoreManagerInterface;
 use Panth\SearchAutocomplete\Helper\Config;
 use Psr\Log\LoggerInterface;
 
-/**
- * Popular searches provider.
- *
- * Reads the most-used queries from search_query (which Magento populates
- * for every storefront search) and returns them as quick-pick chips when
- * the user has not typed anything yet (or for empty result-sets).
- *
- * Restricted to queries that:
- *  - belong to the current store
- *  - have num_results > 0  (so we never suggest a dead query)
- *  - have a non-empty query_text
- *  - are not display_in_terms = 0 (admin can hide individual terms)
- */
 class PopularProvider
 {
     private QueryCollectionFactory $queryCollectionFactory;
@@ -44,12 +31,6 @@ class PopularProvider
         $this->resource = $resource;
     }
 
-    /**
-     * @param string $query optional — when present, popular results that
-     *                      do NOT contain the query string are filtered out
-     *                      so the chip row "matches" the user's intent.
-     * @return array<int, array<string, mixed>>
-     */
     public function search(string $query = ''): array
     {
         $limit = $this->config->getPopularLimit();

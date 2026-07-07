@@ -6,13 +6,6 @@ namespace Panth\SearchAutocomplete\Helper;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface;
 
-/**
- * Typed wrapper around the panth_searchautocomplete/* config tree.
- *
- * Centralising the constants here means controllers / providers / blocks
- * never have to know the XML path layout, and we can change defaults in
- * one place.
- */
 class Config
 {
     public const XML_ENABLED               = 'panth_searchautocomplete/general/enabled';

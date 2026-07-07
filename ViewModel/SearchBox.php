@@ -10,22 +10,6 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Panth\SearchAutocomplete\Helper\Config;
 use Panth\SearchAutocomplete\Model\Security\RequestValidator;
 
-/**
- * Single ViewModel powering the Hyva and Luma search-box templates.
- *
- * Templates only call:
- *   $vm->isEnabled()
- *   $vm->getEndpointUrl()
- *   $vm->getFormKey()
- *   $vm->getMinQueryLength()
- *   $vm->getDebounceMs()
- *   $vm->getHoneypotName()
- *   $vm->getViewAllSearchUrl()
- *   $vm->jsConfig()  ← single JSON blob for the JS bundle
- *
- * That keeps templates dumb and lets us swap providers / config without
- * touching frontend code.
- */
 class SearchBox implements ArgumentInterface
 {
     private Config $config;
@@ -110,12 +94,6 @@ class SearchBox implements ArgumentInterface
         return $this->config->showPopular();
     }
 
-    /**
-     * Single JSON blob the JS bundle reads on init. Keeps the template
-     * free of inline JS and is safe for FPC because none of the values
-     * vary per visitor (form_key is rendered separately into a hidden
-     * field that the JS reads at submit-time).
-     */
     public function jsConfig(): string
     {
         return (string) json_encode([
