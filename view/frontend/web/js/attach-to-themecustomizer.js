@@ -1,5 +1,5 @@
 /*!
- * Panth Search Autocomplete — attach mode for Panth_ThemeCustomizer.
+ * Panth Search Autocomplete - attach mode for Panth_ThemeCustomizer.
  *
  * The ThemeCustomizer module ships its own Luma header-icons template
  * (app/code/Panth/ThemeCustomizer/view/frontend/templates/luma/header-icons.phtml)
@@ -18,7 +18,7 @@
  * Bridge model:
  *   - We do NOT touch the existing input element other than wiring
  *     event listeners and reading its current value.
- *   - We do NOT touch the existing form submit — pressing Enter still
+ *   - We do NOT touch the existing form submit - pressing Enter still
  *     submits to /catalogsearch/result, exactly as before.
  *   - We INJECT a hidden form_key input + a hidden honeypot input so
  *     the AJAX requests pass our security validator.
@@ -298,7 +298,7 @@
         if (!cfg || !cfg.endpoint) return;
         var input = document.getElementById('panth-search-input');
         if (!input) {
-            // Panth_ThemeCustomizer is disabled — leave the standalone
+            // Panth_ThemeCustomizer is disabled - leave the standalone
             // fallback wrap visible so autocomplete.js handles it.
             return;
         }

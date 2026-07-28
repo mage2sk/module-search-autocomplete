@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <!--
-    Default frontend layout — replaces the native Luma "top.search" block
+    Default frontend layout - replaces the native Luma "top.search" block
     with the Panth Autocomplete search box.
 
-    Luma uses container "header.panel" → block "top.search" by default.
-    Hyva uses block "header-search" inside "header-content" — that swap
+    Luma uses container "header.panel" -> block "top.search" by default.
+    Hyva uses block "header-search" inside "header-content" - that swap
     happens in hyva_default.xml which fires only on Hyva-themed pages.
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"

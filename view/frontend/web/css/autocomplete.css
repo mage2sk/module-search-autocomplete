@@ -1,5 +1,5 @@
 /*
- * Panth Search Autocomplete — Luma stylesheet.
+ * Panth Search Autocomplete - Luma stylesheet.
  *
  * Mirrors the Hyva inline CSS exactly so a merchant running both stores
  * gets the same look on both. Uses Luma-friendly defaults (no Tailwind),
@@ -73,7 +73,7 @@
     .psac-overlay-panel { max-width: none; }
 }
 
-/* Close (×) button — corner pill on the overlay panel, NOT inside the form */
+/* Close (×) button - corner pill on the overlay panel, NOT inside the form */
 .psac-close {
     position: absolute;
     top: -44px;

@@ -61,16 +61,16 @@ $cfgUrl = $block->getUrl('adminhtml/system_config/edit/section/panth_searchautoc
 
     <h2 id="architecture">2. Architecture &amp; engine compatibility</h2>
     <p>Single AJAX endpoint at <code>/searchautocomplete/ajax/suggest?q=&lt;term&gt;&amp;form_key=&lt;key&gt;</code>. Pipeline:</p>
-    <pre>RequestValidator → RateLimiter → Cache lookup
+    <pre>RequestValidator -> RateLimiter -> Cache lookup
                                        │
                               ┌────────┴────────┐
-                              │ ProductProvider │ ← Fulltext\Collection (ES/OS/MySQL)
-                              │ CategoryProvider│ ← catalog_category_entity
-                              │ CmsPageProvider │ ← cms_page (storefront-scoped)
-                              │ PopularProvider │ ← search_query
+                              │ ProductProvider │ &lt;- Fulltext\Collection (ES/OS/MySQL)
+                              │ CategoryProvider│ &lt;- catalog_category_entity
+                              │ CmsPageProvider │ &lt;- cms_page (storefront-scoped)
+                              │ PopularProvider │ &lt;- search_query
                               └────────┬────────┘
                                        │
-                                Cache write → JSON response</pre>
+                                Cache write -> JSON response</pre>
     <p>The product path uses <code>\Magento\CatalogSearch\Model\ResourceModel\Fulltext\Collection</code>, which delegates to whichever <em>search engine adapter</em> Magento is configured to use:</p>
     <table>
         <tr><th>Engine</th><th>Magento setting</th><th>Status</th></tr>
@@ -108,7 +108,7 @@ $cfgUrl = $block->getUrl('adminhtml/system_config/edit/section/panth_searchautoc
     </ul>
 
     <h2 id="config">3. Configuration reference</h2>
-    <p>All settings live under <strong>Stores → Configuration → Panth Extensions → Search Autocomplete</strong> and are website / store scoped where it makes sense.</p>
+    <p>All settings live under <strong>Stores -> Configuration -> Panth Extensions -> Search Autocomplete</strong> and are website / store scoped where it makes sense.</p>
 
     <h3>General</h3>
     <table>
@@ -204,7 +204,7 @@ Referrer-Policy: strict-origin-when-cross-origin</pre>
         <tr><td>Dropdown never opens</td><td>Module disabled, or layout container not present in the theme</td><td>Verify <code>panth_searchautocomplete/general/enabled = 1</code>; check the layout XML container name matches your theme.</td></tr>
         <tr><td>0 product results despite typing real SKUs</td><td>Search index empty or stale</td><td><code>bin/magento indexer:reindex catalogsearch_fulltext</code></td></tr>
         <tr><td>"rejected: true" in JSON response</td><td>Form key expired, bot UA, missing X-Requested-With, or cross-origin</td><td>Open browser dev tools, inspect the request headers; reload the page to refresh form_key.</td></tr>
-        <tr><td>"throttled: true" in JSON response (HTTP 429)</td><td>Rate limit hit</td><td>Wait 60 seconds, or raise the limit under Configuration → Bot &amp; Abuse Prevention.</td></tr>
+        <tr><td>"throttled: true" in JSON response (HTTP 429)</td><td>Rate limit hit</td><td>Wait 60 seconds, or raise the limit under Configuration -> Bot &amp; Abuse Prevention.</td></tr>
         <tr><td>Stale results after editing a product</td><td>Cache type not flushed</td><td><code>bin/magento cache:clean panth_search_autocomplete</code> (or wait for the TTL).</td></tr>
         <tr><td>Categories from another store appearing</td><td>Path filter mis-set (should never happen)</td><td>Open a bug - the provider already restricts by <code>path LIKE '1/&lt;rootCategoryId&gt;/%'</code>.</td></tr>
     </table>

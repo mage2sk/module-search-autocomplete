@@ -1,4 +1,4 @@
-# Panth Search Autocomplete — User Guide
+# Panth Search Autocomplete - User Guide
 
 This guide walks a Magento store administrator through every screen and
 setting of the Panth Search Autocomplete extension. No coding required.
@@ -39,7 +39,7 @@ bin/magento cache:flush
 1. Download the extension package zip
 2. Extract to `app/code/Panth/SearchAutocomplete`
 3. Make sure `app/code/Panth/Core` is also present (this extension depends on it)
-4. Run the same `module:enable … cache:flush` commands above
+4. Run the same `module:enable ... cache:flush` commands above
 
 ### Confirm
 
@@ -64,7 +64,7 @@ If nothing happens, see the [Troubleshooting](#10-troubleshooting) section.
 
 ## 3. Configuration screens
 
-Navigate to **Stores → Configuration → Panth Extensions → Search Autocomplete**.
+Navigate to **Stores -> Configuration -> Panth Extensions -> Search Autocomplete**.
 
 You will see four groups: General, Result Sections, Caching, and
 Bot & Abuse Prevention.
@@ -112,8 +112,8 @@ To manually flush the cache type:
 bin/magento cache:clean panth_search_autocomplete
 ```
 
-Or in admin: **System → Cache Management** → check "Panth Search
-Autocomplete" → Submit → Refresh.
+Or in admin: **System -> Cache Management** -> check "Panth Search
+Autocomplete" -> Submit -> Refresh.
 
 ---
 
@@ -123,7 +123,7 @@ The endpoint that powers the autocomplete (`/searchautocomplete/ajax/suggest`) i
 
 | Setting | Default | What it does |
 |---|---|---|
-| **Require Form Key** | Yes | Rejects requests without a valid Magento `form_key`. This is a session-bound rotating CSRF token — the bundled JS sends it automatically. |
+| **Require Form Key** | Yes | Rejects requests without a valid Magento `form_key`. This is a session-bound rotating CSRF token - the bundled JS sends it automatically. |
 | **Rate Limit (req / min / IP)** | 60 | Sliding 60-second window per (IP + UA + store). Cache-served responses do not count, so legitimate users are never throttled. |
 | **Block Empty User-Agent** | Yes | Headless probes routinely omit the UA. |
 | **Block Bot User-Agent Patterns** | Yes | Blocks 22 known patterns: curl, wget, python-requests, scrapy, headlesschrome, sqlmap, nikto, masscan, etc. |
@@ -138,17 +138,17 @@ The endpoint that powers the autocomplete (`/searchautocomplete/ajax/suggest`) i
 
 ## 7. In-admin documentation page
 
-Navigate to **Stores → Panth Infotech → Search Autocomplete → Documentation**.
+Navigate to **Stores -> Panth Infotech -> Search Autocomplete -> Documentation**.
 
 This is a complete in-admin reference covering:
 
 - Architecture diagram
 - Engine compatibility (ES7 / ES8 / OpenSearch / MySQL)
 - Per-section filter rules (visibility, status, OOS, store scope)
-- Security model — what each layer blocks
+- Security model - what each layer blocks
 - Performance and caching internals
 - Theme integration (Hyva + Luma)
-- Extending — adding new content types
+- Extending - adding new content types
 - Troubleshooting matrix
 - CLI reference
 
@@ -161,7 +161,7 @@ product names ("phone" when you sell "smartphones", "tee" when you list
 "t-shirts", "kids" when you list "children"), set up Magento's built-in
 synonym table:
 
-1. Open **Marketing → SEO & Search → Search Synonyms**
+1. Open **Marketing -> SEO & Search -> Search Synonyms**
 2. Click **New Synonym Group**
 3. Pick the store view
 4. Enter comma-separated terms (e.g. `tshirt,tee,top,shirt`)
@@ -170,7 +170,7 @@ synonym table:
 The Magento search engine reads these synonyms when building queries,
 so this autocomplete picks them up automatically with no code changes.
 
-> **No hard-coded vocabulary** — this extension is catalog-agnostic
+> **No hard-coded vocabulary** - this extension is catalog-agnostic
 > by design. Whether you sell jewelry, electronics, furniture, or
 > apparel, the synonyms are entirely under your control via the
 > Magento admin.
@@ -181,7 +181,7 @@ so this autocomplete picks them up automatically with no code changes.
 
 To make a custom product attribute searchable in the autocomplete:
 
-1. **Stores → Attributes → Product**
+1. **Stores -> Attributes -> Product**
 2. Find your attribute (e.g. `brand`, `material`, `collection`)
 3. Open the **Storefront Properties** tab
 4. Set **Use in Search** = `Yes`
@@ -195,7 +195,7 @@ bin/magento cache:clean panth_search_autocomplete
 ```
 
 The attribute is now searchable. The autocomplete picks it up
-automatically — **no code change needed**.
+automatically - **no code change needed**.
 
 ---
 
@@ -203,12 +203,12 @@ automatically — **no code change needed**.
 
 | Symptom | Likely cause | Fix |
 |---|---|---|
-| Dropdown never opens | Module disabled, or no `form_key` cookie | Verify Configuration → Enable Module = Yes; reload the page; check browser console |
+| Dropdown never opens | Module disabled, or no `form_key` cookie | Verify Configuration -> Enable Module = Yes; reload the page; check browser console |
 | Zero product results despite typing real product names | Search index empty / stale | `bin/magento indexer:reindex catalogsearch_fulltext` |
 | `"rejected": true` in JSON response | Form key expired, bot UA, missing X-Requested-With, cross-origin | Reload the page to refresh `form_key`; check the headers your client sends |
-| HTTP 429 throttled | Hit per-IP rate limit | Wait 60 seconds, or raise the limit under Configuration → Bot & Abuse Prevention |
+| HTTP 429 throttled | Hit per-IP rate limit | Wait 60 seconds, or raise the limit under Configuration -> Bot & Abuse Prevention |
 | Stale results after editing a product | Cache not flushed | `bin/magento cache:clean panth_search_autocomplete` |
-| Dropdown shows wrong currency | Customer-group cache key | Cache rows are scoped per (store, customer group, query) — log out and back in |
+| Dropdown shows wrong currency | Customer-group cache key | Cache rows are scoped per (store, customer group, query) - log out and back in |
 | New custom attribute not appearing in results | Attribute not searchable, or index stale | See [Adding searchable attributes](#9-adding-searchable-attributes) above |
 
 ---

@@ -1,5 +1,5 @@
 /*!
- * Panth Search Autocomplete — Luma vanilla-JS bundle.
+ * Panth Search Autocomplete - Luma vanilla-JS bundle.
  *
  * Same logic as the Hyva Alpine.js component but written as a small
  * IIFE so it works on every Magento storefront with zero RequireJS /
@@ -95,7 +95,7 @@
                 signal: state.controller.signal,
             }).then(function (r) { return r.ok ? r.json() : Promise.reject(r); })
               .then(function (data) { state.cache.set(key, data); apply(data, popularOnly); })
-              .catch(function () { /* aborted or net error — ignore */ })
+              .catch(function () { /* aborted or net error - ignore */ })
               .finally(function () {
                   state.loading = false;
                   if (loading) loading.hidden = true;
@@ -387,7 +387,7 @@
         // mode + Luma standalone fallback).
         document.querySelectorAll('.psac-wrap').forEach(function (root) {
             if (root.dataset.psacInited === '1') return;
-            // If we are in attach mode, skip — the attach script handles
+            // If we are in attach mode, skip - the attach script handles
             // wiring autocomplete to ThemeCustomizer's input.
             var inFallback = root.closest('[data-psac-fallback]');
             if (inFallback && themeCustomizerInput) return;

@@ -91,7 +91,7 @@
                 <field id="require_form_key" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Require Form Key</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>Rejects requests without a valid Magento form_key — defeats simple bots.</comment>
+                    <comment>Rejects requests without a valid Magento form_key - defeats simple bots.</comment>
                 </field>
                 <field id="rate_limit_per_minute" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Rate Limit (req / min / IP)</label>
@@ -124,7 +124,7 @@
                 <field id="max_body_bytes" translate="label comment" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Max POST Body (bytes)</label>
                     <validate>validate-digits validate-greater-than-zero</validate>
-                    <comment>Default 4096. Hard cap on POST body size — autocomplete payloads are tiny.</comment>
+                    <comment>Default 4096. Hard cap on POST body size - autocomplete payloads are tiny.</comment>
                 </field>
             </group>
         </section>

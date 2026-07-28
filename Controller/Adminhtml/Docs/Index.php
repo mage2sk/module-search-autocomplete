@@ -24,7 +24,7 @@ class Index extends Action
     {
         $page = $this->resultPageFactory->create();
         $page->setActiveMenu('Panth_SearchAutocomplete::docs');
-        $page->getConfig()->getTitle()->prepend(__('Search Autocomplete — Documentation'));
+        $page->getConfig()->getTitle()->prepend(__('Search Autocomplete - Documentation'));
         return $page;
     }
 }

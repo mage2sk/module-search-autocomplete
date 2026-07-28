@@ -11,8 +11,8 @@
 
     The Alpine state `searchOpen` is `false` by default and toggles to
     `true` when the user clicks the search-icon button (`#menu-search-icon`).
-    That gives us the EXACT click-icon → popup-overlay UX the merchant
-    wants — we just need to render OUR template inside the existing
+    That gives us the EXACT click-icon -> popup-overlay UX the merchant
+    wants - we just need to render OUR template inside the existing
     `header-search` slot. We use `<referenceBlock>` (NOT remove + re-add)
     so the slot stays present and the parent's getChildHtml() call still
     resolves.

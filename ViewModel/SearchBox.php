@@ -110,7 +110,7 @@ class SearchBox implements ArgumentInterface
             'showPopular'   => $this->showPopular(),
             'i18n' => [
                 'placeholder'   => __('Search for products, categories, brands...')->render(),
-                'searching'     => __('Searching…')->render(),
+                'searching'     => __('Searching...')->render(),
                 'noResults'     => __('No matches. Try a simpler word like "shirt" or "bag".')->render(),
                 'products'      => __('Products')->render(),
                 'categories'    => __('Categories')->render(),
